@@ -62,7 +62,7 @@ function App() {
       const fetchInfo = async () => {
         setIsScanning(true);
         try {
-          const res = await fetch("http://localhost:5000/video-info", {
+          const res = await fetch("https://youtubevideo-downloader-extension.onrender.com/video-info", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ url: videoUrl })
@@ -137,7 +137,7 @@ function App() {
       setStatus("Downloading...");
 
       const response = await fetch(
-        "http://localhost:5000/download",
+        "https://youtubevideo-downloader-extension.onrender.com/download",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -155,7 +155,7 @@ function App() {
       if (data.success) {
         setStatus("Download completed! Prompting to save...");
         if (data.fileName) {
-          const downloadUrl = `http://localhost:5000/downloads/${data.fileName}`;
+          const downloadUrl = `https://youtubevideo-downloader-extension.onrender.com/downloads/${data.fileName}`;
           if (typeof chrome !== "undefined" && chrome.downloads) {
             chrome.downloads.download({ url: downloadUrl, saveAs: true });
           } else {

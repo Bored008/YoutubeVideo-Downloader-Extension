@@ -49,8 +49,6 @@ console.log(req.body);
   endTime
 } = req.body;
     const downloadsDir = path.join(__dirname, "downloads");
-    const tempTemplate = path.join(downloadsDir, "temp.%(ext)s");
-
     const trimmedPath = path.join(downloadsDir, `trimmed-${Date.now()}.mp4`);
     let finalVideoPath = "";
 
@@ -86,6 +84,9 @@ console.log(req.body);
       return Number(t);
     };
 
+    const uniqueId = Date.now();
+    const tempTemplate = path.join(downloadsDir, `temp-${uniqueId}.%(ext)s`);
+
     let ytDlpOptions = {
       output: tempTemplate,
       format: format,
@@ -101,17 +102,17 @@ console.log(req.body);
       ytDlpOptions.downloadSections = `*${startSec}-${endSec}`;
     }
 
-    console.log("Starting yt-dlp download...");
+    console.log(`Starting yt-dlp download for ${uniqueId}...`);
 
     await ytDlp(url, ytDlpOptions);
 
-    console.log("yt-dlp download completed");
+    console.log(`yt-dlp download ${uniqueId} completed`);
 
     // locate the actual downloaded temp file (yt-dlp replaces %(ext)s)
     let tempFile;
     try {
       const downloadedFiles = fs.readdirSync(downloadsDir);
-      const tempFiles = downloadedFiles.filter((f) => f.startsWith("temp."));
+      const tempFiles = downloadedFiles.filter((f) => f.startsWith(`temp-${uniqueId}.`));
       if (tempFiles.length === 0) throw new Error("Downloaded temp file not found");
       // Use the most recently created temp file
       tempFile = tempFiles.sort().pop();
@@ -122,7 +123,7 @@ console.log(req.body);
 
     const finalPath = path.join(
       downloadsDir,
-      `video-${Date.now()}.mp4`
+      `video-${uniqueId}.mp4`
     );
 
     fs.renameSync(tempPath, finalPath);
