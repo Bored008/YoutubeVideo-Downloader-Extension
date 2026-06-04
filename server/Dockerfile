@@ -2,7 +2,7 @@ FROM node:20-slim
 
 # Install Python 3 (required by yt-dlp on Linux)
 RUN apt-get update && \
-    apt-get install -y python3 && \
+    apt-get install -y python3 python-is-python3 && \
     rm -rf /var/lib/apt/lists/*
 
 # Set the working directory
