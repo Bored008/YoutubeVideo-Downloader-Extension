@@ -1,3 +1,72 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  body {
+    font-family: 'Inter', sans-serif;
+    @apply bg-slate-950 text-slate-100;
+    margin: 0;
+    overflow-x: hidden;
+  }
+
+  /* Custom Scrollbar for sleekness */
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-white/10 rounded-full;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-white/20;
+  }
+}
+
+@layer utilities {
+  .glass-panel {
+    @apply bg-white/5 backdrop-blur-xl border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.3)];
+  }
+  
+  .glass-input {
+    @apply bg-white/5 border border-white/10 rounded-xl focus:border-indigo-400 focus:bg-white/10 focus:ring-4 focus:ring-indigo-500/20 transition-all duration-300 outline-none text-white placeholder:text-gray-400;
+  }
+
+  .animated-gradient-bg {
+    background: linear-gradient(-45deg, #0f172a, #1e1b4b, #312e81, #0f172a);
+    background-size: 400% 400%;
+    animation: gradientBG 15s ease infinite;
+  }
+
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-cyan-400;
+  }
+}
+
+@keyframes gradientBG {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Custom RC Slider Styles Overrides to match theme */
+.rc-slider-track {
+  background: linear-gradient(to right, #818cf8, #22d3ee) !important;
+}
+.rc-slider-handle {
+  border: 2px solid #22d3ee !important;
+  background-color: #0f172a !important;
+  box-shadow: 0 0 10px rgba(34, 211, 238, 0.5) !important;
+  opacity: 1 !important;
+}
+.rc-slider-handle-dragging {
+  box-shadow: 0 0 15px rgba(34, 211, 238, 0.8) !important;
+  border-color: #818cf8 !important;
+}
+.rc-slider-rail {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+}
