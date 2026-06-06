@@ -49,7 +49,7 @@ function App() {
         { active: true, currentWindow: true },
         (tabs) => {
           const currentUrl = tabs[0]?.url;
-          if (currentUrl && currentUrl.includes("youtube.com/watch")) {
+          if (currentUrl && (currentUrl.includes("youtube.com") || currentUrl.includes("youtu.be"))) {
             setVideoUrl(currentUrl);
           }
         }
@@ -58,11 +58,11 @@ function App() {
   }, []);
 
   useEffect(() => {
-    if (videoUrl && videoUrl.includes("youtube.com/watch")) {
+    if (videoUrl && (videoUrl.includes("youtube.com") || videoUrl.includes("youtu.be"))) {
       const fetchInfo = async () => {
         setIsScanning(true);
         try {
-          const res = await fetch("https://youtubevideo-downloader-extension.onrender.com/video-info", {
+          const res = await fetch("http://localhost:5000/video-info", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ url: videoUrl })
@@ -137,7 +137,7 @@ function App() {
       setStatus("Downloading...");
 
       const response = await fetch(
-        "https://youtubevideo-downloader-extension.onrender.com/download",
+        "http://localhost:5000/download",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -155,7 +155,7 @@ function App() {
       if (data.success) {
         setStatus("Download completed! Prompting to save...");
         if (data.fileName) {
-          const downloadUrl = `https://youtubevideo-downloader-extension.onrender.com/downloads/${data.fileName}`;
+          const downloadUrl = `http://localhost:5000/downloads/${data.fileName}`;
           if (typeof chrome !== "undefined" && chrome.downloads) {
             chrome.downloads.download({ url: downloadUrl, saveAs: true });
           } else {
